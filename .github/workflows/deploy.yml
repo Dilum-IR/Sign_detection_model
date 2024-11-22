@@ -17,6 +17,9 @@ jobs:
       with:
         python-version: 3.11
 
+    - name: Verify Python Installation
+      run: python --version
+
     - name: Ensure Functions Directory Exists
       run: |
         mkdir -p ./functions
@@ -24,12 +27,13 @@ jobs:
     - name: Create Virtual Environment
       working-directory: ./functions
       run: |
-        python -m venv venv
+        python -m venv .venv
+        ls -l .venv
         
     - name: Activate Virtual Environment and Install Dependencies
       working-directory: ./functions
       run: |
-        source venv/bin/activate
+        source .venv/bin/activate
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
@@ -43,5 +47,5 @@ jobs:
       env:
         FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
       run: |
-       source venv/bin/activate
+       source .venv/bin/activate
        firebase deploy --only functions
