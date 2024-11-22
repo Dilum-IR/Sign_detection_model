@@ -37,6 +37,10 @@ actions = ["hello", "thanks", "i love you"]
 # def on_request_test(req: https_fn.Request) -> https_fn.Response:
 #     return https_fn.Response("Hello world!")
 
+@app.get("/")
+def root():
+    return {"message": "Hello, Firebase Functions!"}
+
 
 class KeypointInput(BaseModel):
     keypoint: List[List[float]]  # List of 30 frames, each containing flattened key points
@@ -71,7 +75,6 @@ stripe.api_key = 'sk_test_51OXIY6SE8MZqjzvmoH00vOhSfKQiCrd8Ob14haVYbQclK18JJTgBE
 
 @app.get('/payment-sheet')
 async def payment_sheet():
-
     customer = stripe.Customer.create()
     ephemeralKey = stripe.EphemeralKey.create(
         customer=customer['id'],
@@ -88,11 +91,11 @@ async def payment_sheet():
         },
     )
     return {
-            "paymentIntent": paymentIntent.client_secret,
-            "ephemeralKey": ephemeralKey.secret,
-            "customer": customer.id,
-            "publishableKey": 'pk_test_51OXIY6SE8MZqjzvm9EuoCGVCtkJGQxbcfxDxxJZ3ev7xvtTCUePz6liBSlMSMqibkvdbbxrccYlyrCixzUerS2SY00pEyJFQ0e'
-            }
+        "paymentIntent": paymentIntent.client_secret,
+        "ephemeralKey": ephemeralKey.secret,
+        "customer": customer.id,
+        "publishableKey": 'pk_test_51OXIY6SE8MZqjzvm9EuoCGVCtkJGQxbcfxDxxJZ3ev7xvtTCUePz6liBSlMSMqibkvdbbxrccYlyrCixzUerS2SY00pEyJFQ0e'
+    }
 
 
 if __name__ == "__main__":
