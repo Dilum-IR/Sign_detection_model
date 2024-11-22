@@ -23,13 +23,13 @@ jobs:
 
     - name: Create and Activate Virtual Environment
       run: |
+        cd functions
         python -m venv venv
         source venv/bin/active
         python -m pip install --upgrade pip
 
     - name: Install Dependencies
       run: |
-        cd functions
         python -m venv venv
         source venv/bin/active
         pip install -r ./functions/requirements.txt
