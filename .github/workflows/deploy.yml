@@ -25,7 +25,7 @@ jobs:
       run: |
         cd functions
         python3 -m venv venv
-        source venv/bin/active
+        source venv/bin/activate
         python -m pip install --upgrade pip
 
     - name: Install Dependencies
