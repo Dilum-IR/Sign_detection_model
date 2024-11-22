@@ -22,9 +22,10 @@ jobs:
 
     - name: Install Python dependencies
       run: |
-        cd functions
+        python -m venv ./functions/venv
+        . ./functions/venv/bin/activate
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r ./functions/requirements.txt
 
     - name: Deploy to Firebase Functions
       run: firebase deploy --only functions
