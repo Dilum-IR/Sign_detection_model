@@ -1,1 +1,1 @@
-# ML_model_deploy
+# Sign Detection Model and Payment Gateway endpoints
