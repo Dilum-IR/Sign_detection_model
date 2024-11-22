@@ -19,7 +19,7 @@ jobs:
 
     - name: Ensure Functions Directory Exists
       run: |
-        mkdir -p ./functions
+        mkdir -p ./functions  # Ensure 'functions' directory exists
 
     - name: Create and Activate Virtual Environment
       run: |
@@ -33,7 +33,7 @@ jobs:
         pip install -r ./functions/requirements.txt
 
     - name: Set up Firebase CLI
-      uses: w9jds/firebase-action@v2
+      uses: w9jds/firebase-action@master
       with:
         args: login:ci --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
 
