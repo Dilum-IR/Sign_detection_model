@@ -37,15 +37,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Set up Firebase CLI
+    - name: Deploy to Firebase Functions
       uses: w9jds/firebase-action@master
       with:
-        args: login:ci --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
-
-    - name: Deploy to Firebase
-      working-directory: ./functions
+        args: deploy --only functions
       env:
-        FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
-      run: |
-       source .venv/bin/activate
-       firebase deploy --only functions
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
