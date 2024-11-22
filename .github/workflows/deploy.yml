@@ -19,17 +19,18 @@ jobs:
 
     - name: Ensure Functions Directory Exists
       run: |
-        mkdir -p ./functions  # Ensure 'functions' directory exists
+        mkdir -p ./functions
 
     - name: Create and Activate Virtual Environment
       run: |
-        python -m venv venv
+        cd functions
+        python3 -m venv venv
         source venv/bin/active
         python -m pip install --upgrade pip
 
     - name: Install Dependencies
       run: |
-        python -m venv venv
+        python3 -m venv venv
         source venv/bin/active
         pip install -r ./functions/requirements.txt
 
