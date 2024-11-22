@@ -22,15 +22,17 @@ jobs:
         mkdir -p ./functions
 
     - name: Create and Activate Virtual Environment
+      working-directory: ./functions
       run: |
-        python -m venv ./functions/venv
-        . ./functions/venv/bin/activate
+        python3 -m venv venv
+        source venv/bin/activate
         python -m pip install --upgrade pip
 
     - name: Install Dependencies
+      working-directory: ./functions
       run: |
-        . ./functions/venv/bin/activate
-        pip install -r ./functions/requirements.txt
+        source venv/bin/activate
+        pip install -r requirements.txt
 
     - name: Set up Firebase CLI
       uses: w9jds/firebase-action@master
@@ -38,8 +40,9 @@ jobs:
         args: login:ci --token ${{ secrets.FIREBASE_AUTH_TOKEN }}
 
     - name: Deploy to Firebase
+      working-directory: ./functions
       env:
         FIREBASE_AUTH_TOKEN: ${{ secrets.FIREBASE_AUTH_TOKEN }}
       run: |
-        . ./functions/venv/bin/activate
-        firebase deploy --only functions
+       source venv/bin/activate
+       firebase deploy --only functions
