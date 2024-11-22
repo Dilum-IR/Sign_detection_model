@@ -23,15 +23,13 @@ jobs:
 
     - name: Create and Activate Virtual Environment
       run: |
-        cd functions
-        python3 -m venv venv
-        source venv/bin/activate
+        python -m venv ./functions/venv
+        . ./functions/venv/bin/activate
         python -m pip install --upgrade pip
 
     - name: Install Dependencies
       run: |
-        python3 -m venv venv
-        source venv/bin/activate
+        . ./functions/venv/bin/activate
         pip install -r ./functions/requirements.txt
 
     - name: Set up Firebase CLI
