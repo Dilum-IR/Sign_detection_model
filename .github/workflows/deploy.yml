@@ -24,7 +24,7 @@ jobs:
     - name: Create and Activate Virtual Environment
       working-directory: ./functions
       run: |
-        python3 -m venv venv
+        python -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
 
