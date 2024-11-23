@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import numpy as np
-# from tensorflow.keras.models import load_model
+from tensorflow.keras.models import load_model
 
 from logger import logging
 
@@ -19,7 +19,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# model = load_model("./train_model.h5")
+model = load_model("train_model.h5")
+
+print(model.summary())
 
 actions = ["hello", "thanks", "i love you"]
 
@@ -37,7 +39,7 @@ async def predict(sequence: KeypointInput):
     try:
         logging.info("sequence length: " + str(len(sequence.keypoint)))
 
-        # sequence = np.array(keypoint_input.sequence)
+        sequence = np.array(sequence.keypoint)
 
         print(sequence.keypoint)
 
