@@ -1,1 +1,1 @@
-# Sign Detection Model and Payment Gateway endpoints
+# Sign Detection Model
