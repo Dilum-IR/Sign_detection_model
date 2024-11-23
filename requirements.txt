@@ -1,0 +1,7 @@
+fastapi==0.100.0
+uvicorn==0.22.0
+pydantic==1.10.12
+numpy
+python-dotenv
+# gunicorn==21.2.0
+tensorflow

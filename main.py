@@ -1,5 +1,4 @@
-import os
-import stripe
+
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List
@@ -46,40 +45,6 @@ async def predict(sequence: KeypointInput):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
-
-# This example sets up an endpoint using the Flask framework.
-# Watch this video to get started: https://youtu.be/7Ul1vfmsDck.
-
-# See your keys here: https://dashboard.stripe.com/apikeys
-stripe.api_key = 'sk_test_51OXIY6SE8MZqjzvmoH00vOhSfKQiCrd8Ob14haVYbQclK18JJTgBEX9paKzRZ3dJ9SzdLa2bi4qhJPltKp0ESB9Y00IZwcuMrC'
-
-
-@app.get('/payment-sheet')
-async def payment_sheet():
-
-    customer = stripe.Customer.create()
-    ephemeralKey = stripe.EphemeralKey.create(
-        customer=customer['id'],
-        stripe_version='2024-11-20.acacia',
-    )
-
-    paymentIntent = stripe.PaymentIntent.create(
-        amount=1099,  # $10.99
-        currency='usd',
-        customer=customer['id'],
-        description='Payment for EchoLink subscription',
-        automatic_payment_methods={
-            'enabled': True,
-        },
-    )
-    return {
-            "paymentIntent": paymentIntent.client_secret,
-            "ephemeralKey": ephemeralKey.secret,
-            "customer": customer.id,
-            "publishableKey": 'pk_test_51OXIY6SE8MZqjzvm9EuoCGVCtkJGQxbcfxDxxJZ3ev7xvtTCUePz6liBSlMSMqibkvdbbxrccYlyrCixzUerS2SY00pEyJFQ0e'
-            }
-
 
 if __name__ == "__main__":
     # port = int(os.getenv("PORT", 8080))
