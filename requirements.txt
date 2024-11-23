@@ -5,3 +5,6 @@ numpy
 python-dotenv
 # gunicorn==21.2.0
 tensorflow
+
+# apped all dependencies
+# pip freeze > requirement.txt

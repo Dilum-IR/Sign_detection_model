@@ -1,11 +1,12 @@
-
+import uvicorn
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import numpy as np
-import uvicorn
 # from tensorflow.keras.models import load_model
-from fastapi.middleware.cors import CORSMiddleware
+
+from logger import logging
 
 app = FastAPI()
 
@@ -26,10 +27,16 @@ actions = ["hello", "thanks", "i love you"]
 class KeypointInput(BaseModel):
     keypoint: List[List[float]]  # List of 30 frames, each containing flattened key points
 
+@app.get("/")
+async def root():
+    logging.info("request for root route")
+    return {"message": "Hello Model"}
 
 @app.post("/predict")
 async def predict(sequence: KeypointInput):
     try:
+        logging.info("sequence length: " + str(len(sequence.keypoint)))
+
         # sequence = np.array(keypoint_input.sequence)
 
         print(sequence.keypoint)
@@ -48,4 +55,5 @@ async def predict(sequence: KeypointInput):
 
 if __name__ == "__main__":
     # port = int(os.getenv("PORT", 8080))
+    logging.info("Starting FastAPI app")
     uvicorn.run("main:app", host="127.0.0.1", port=9000, reload=True)
