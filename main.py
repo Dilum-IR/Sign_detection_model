@@ -1,11 +1,11 @@
 import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List
 import numpy as np
 from tensorflow.keras.models import load_model
 
+from Model.KeypointInput import KeypointInput
+from Data.Actions import actions
 from logger import logging
 
 app = FastAPI()
@@ -19,43 +19,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# load a model
 model = load_model("train_model.h5")
+logging.warning(str(model.summary()))
 
-print(model.summary())
-
-actions = ["hello", "thanks", "i love you"]
-
-
-class KeypointInput(BaseModel):
-    keypoint: List[List[float]]  # List of 30 frames, each containing flattened key points
 
 @app.get("/")
 async def root():
     logging.info("request for root route")
     return {"message": "Hello Model"}
 
+
 @app.post("/predict")
 async def predict(sequence: KeypointInput):
     try:
-        logging.info("sequence length: " + str(len(sequence.keypoint)))
-
+        logging.info("request for predictions")
         sequence = np.array(sequence.keypoint)
 
-        print(sequence.keypoint)
-
-        # if sequence.shape != (30, 1662):  # Assuming 1662 keypoint per frame
-        #     raise HTTPException(status_code=400, detail="Invalid sequence shape")
+        # Assuming 1662 keypoint per frame
+        if sequence.shape != (30, 1662):
+            logging.error(str(e))
+            raise HTTPException(status_code=400, detail="Invalid sequence shape")
 
         # Predict using the model
-        # res = model.predict(np.expand_dims(sequence, axis=0))[0]
-        # prediction = actions[np.argmax(res)] if res[np.argmax(res)] > 0.4 else "No confident prediction"
-
-        return {"prediction": "prediction"}
+        res = model.predict(np.expand_dims(sequence, axis=0))[0]
+        prediction = actions[np.argmax(res)] if res[np.argmax(res)] > 0.5 else "No confident prediction"
+        
+        # logging and pass response for users
+        # Need to connect firebase realtime DB
+        logging.info("mode predict value result:"+res+" predict result:"+prediction)
+        return {"prediction": prediction}
 
     except Exception as e:
+        logging.error(str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
+
 if __name__ == "__main__":
-    # port = int(os.getenv("PORT", 8080))
-    logging.info("Starting FastAPI app")
-    uvicorn.run("main:app", host="127.0.0.1", port=9000, reload=True)
+    logging.info("Starting Server app on http://127.0.0.1:8000")
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
