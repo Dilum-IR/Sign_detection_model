@@ -24,7 +24,7 @@ pip install -r requirements.txt
 
 ### 4. Run the server
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 9100
 ```
 
 ## Mac OS
@@ -46,7 +46,7 @@ pip install -r requirements.txt
 
 ### 4. Run the server
 ```bash
-uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 9100
 ```
 
 ## Endpoint Information

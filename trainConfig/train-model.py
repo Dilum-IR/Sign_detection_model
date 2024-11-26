@@ -1,5 +1,8 @@
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+from tensorflow.keras.callbacks import TensorBoard
 import cv2
 import numpy as np
 import os
@@ -35,10 +38,6 @@ print(X_train.shape)
 
 # Build and Train LSTM Nural Network
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
-from tensorflow.keras.callbacks import TensorBoard
-
 # monitor the training model accuracy and in-details
 log_dir = os.path.join('Logs')
 tb_callback = TensorBoard(log_dir=log_dir)
@@ -64,3 +63,10 @@ model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categ
 model.fit(X_train, y_train, epochs=1000, callbacks=[tb_callback])
 
 model.summary()
+
+# make Predicitons
+res = model.predict(X_test)
+Actions[np.argmax(res[1])]
+
+Actions[np.argmax(y_test[1])]
+Actions[(y_test[4])]

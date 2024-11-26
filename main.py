@@ -33,6 +33,7 @@ async def root():
 @app.post("/predict")
 async def predict(sequence: KeypointInput):
     try:
+        # print(sequence)
         logging.info("request for predictions")
         sequence = np.array(sequence.keypoint)
 
@@ -47,7 +48,7 @@ async def predict(sequence: KeypointInput):
         
         # logging and pass response for users
         # Need to connect firebase realtime DB
-        logging.info("mode predict value result:"+res+" predict result:"+prediction)
+        logging.info("model predict result:"+prediction)
         return {"prediction": prediction}
 
     except Exception as e:
@@ -56,5 +57,5 @@ async def predict(sequence: KeypointInput):
 
 
 if __name__ == "__main__":
-    logging.info("Starting Server app on http://127.0.0.1:8000")
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    logging.info("Starting Server app on http://127.0.0.1:9100")
+    uvicorn.run("main:app", host="127.0.0.1", port=9100, reload=True)
